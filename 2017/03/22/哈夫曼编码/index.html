@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--
+***************  *      *     *
+      8          *    *       *
+      8          *  *         *
+      8          **           *
+      8          *  *         *
+      8          *    *       *
+      8          *      *     *
+      8          *        *   ***********    -----Theme By Kieran(http://go.kieran.top)
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<!--<![endif]-->
+
+<head>
+  <title>哈夫曼编码 | Lewis&#39;s Blog</title>
+  <!-- Meta data -->
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Lewis's Blog">
+    <meta name="author" content="yuanshan_xike">
+    <meta name="description" content="向身边的大佬看齐" />
+    <meta name="keywords" content="" />
+
+    <!-- Favicon, (keep icon in root folder) -->
+    <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+    <link rel="alternate" href="/atom.xmlw" title="Lewis&#39;s Blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+    
+    <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+    
+
+    <!--[if IE 8]>
+    <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+    <![endif]-->
+
+    <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+    <script src="/js/jquery-1.11.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>')</script>
+
+    <!-- Load these in the <head> for quicker IE8+ load times -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv.min.js"></script>
+    <script src="/js/respond.min.js"></script>
+    <![endif]-->
+
+  
+  
+  
+
+  <style>.col-md-8.col-md-offset-2.opening-statement img{display:none;}</style>
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body id="index" class="lightnav animsition">
+
+      <!-- ============================ Off-canvas navigation =========================== -->
+
+    <div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+            <img src="/img/close.png" alt="Close"/>
+        </div>
+        <!-- Lists in Slidebars -->
+        <ul class="sb-menu">
+            <li><a href="/" class="animsition-link" title="Home">Home</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">archives</a></li>
+            <!-- Dropdown Menu -->
+			 
+            <li>
+                <a class="sb-toggle-submenu">Works<span class="sb-caret"></span></a>
+                <ul class="sb-submenu">
+                    
+                        <li><a href="/" target="_BLANK" class="animsition-link">android</a></li>
+                    
+                        <li><a href="/atom.xml" target="_BLANK" class="animsition-link">java</a></li>
+                    
+                </ul>
+            </li>
+            
+            
+            
+            <li>
+                <a class="sb-toggle-submenu">Links<span class="sb-caret"></span></a>
+                <ul class="sb-submenu">
+                    
+                    <li><a href="https://github.com/yuanshanxike" class="animsition-link">GitHub</a></li>
+                    
+                    <li><a href="http://git.oschina.net/13108102002" class="animsition-link">OSChina git</a></li>
+                    
+                </ul>
+            </li>
+            
+        </ul>
+        <!-- Lists in Slidebars -->
+        <ul class="sb-menu secondary">
+            <li><a href="/about.html" class="animsition-link" title="about">About</a></li>
+            <li><a href="/atom.xml" class="animsition-link" title="rss">RSS</a></li>
+        </ul>
+    </div>
+    
+    <!-- ============================ END Off-canvas navigation =========================== -->
+
+    <!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+    <div id="sb-site">
+        <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+        <!-- ============================ Header & Logo bar =========================== -->
+
+        <div id="navigation" class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <!-- Nav logo -->
+                    <div class="logo">
+                        <a href="/" title="Logo" class="animsition-link">
+                         <img src="/img/logo.png" alt="Logo" width="35px;"/> 
+                        </a>
+                    </div>
+                    <!-- // Nav logo -->
+                    <!-- Info-bar -->
+                    <nav>
+                        <ul class="nav">
+                            <li><a href="/" class="animsition-link">Lewis's Blog</a></li>
+                            <li class="nolink"><span>Always </span>Creative.</li>
+                            
+                            <li><a href="https://github.com/yuanshanxike" title="Github" target="_blank"><i class="icon-github"></i></a></li>
+                            
+                            
+                            
+                            
+                            <li><a href="https://google.com/" title="Google-Plus" target="_blank"><i class="icon-google-plus"></i></a></li>
+                            
+                            
+                            <li><a href="http://weibo.com/p/1005051830084464/home?from=page_100505&mod=TAB&is_all=1#place" title="Sina-Weibo" target="_blank"><i class="icon-sina-weibo"></i></a></li>
+                            
+                            <li class="nolink"><span>Welcome!</span></li>
+                        </ul>
+                    </nav>
+                    <!--// Info-bar -->
+                </div>
+                <!-- // .container -->
+                <div class="learnmore sb-toggle-right">More</div>
+                <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar before"></span>
+                <span class="icon-bar main"></span>
+                <span class="icon-bar after"></span>
+                </button>
+            </div>
+            <!-- // .navbar-inner -->
+        </div>
+
+        <!-- ============================ Header & Logo bar =========================== -->
+
+
+      
+<section id="intro">
+    <div class="container">
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2017-03-22T06:13:23.000Z" itemprop="datePublished">
+          2017-03-22
+      </time>
+    
+    
+    | 
+    <a href='/tags/数据结构-算法/'>数据结构&amp;算法</a>
+    
+    
+</span>
+                <h1>哈夫曼编码</h1>
+            </div>
+        </div>
+        <div class="col-md-8 col-md-offset-2">
+      		<h2 id="——牛客-lt-美团点评-gt-笔试【编程题】-字符编码"><a href="#——牛客-lt-美团点评-gt-笔试【编程题】-字符编码" class="headerlink" title="——牛客&lt;美团点评&gt;笔试【编程题】 字符编码"></a>——<a href="https://www.nowcoder.com/practice/c471efdbd33a4a979539a91170c9f1cb?tpId=49&amp;&amp;tqId=29314&amp;rp=1&amp;ru=/activity/oj&amp;qru=/ta/2016test/question-ranking" target="_blank" rel="external">牛客&lt;美团点评&gt;笔试【编程题】 字符编码</a></h2><hr>
+<p>　　最近，春招实习生开始了，相信大家都开始准备各种面试、笔试了。<br>　　博主也不例外，走上了起早贪黑，看书、刷题的不归路。作为人生的<strong>第一篇博客</strong>（之前确实太懒），在这里给大家带来一篇 <em>哈夫曼编码</em> 相关知识的讲解与代码分享，同时也作为一个算法笔记，有兴趣的同学可以来看看，有写的不对的地方欢迎指出，祝大家都能拿到一个好的offer。</p>
+<hr>
+<h4 id="首先是-哈夫曼编码-的一些理论基础"><a href="#首先是-哈夫曼编码-的一些理论基础" class="headerlink" title="首先是 哈夫曼编码 的一些理论基础"></a>首先是 <em>哈夫曼编码</em> 的一些理论基础</h4><blockquote>
+<p>　　哈夫曼树又称最优二叉树，是一种带权路径长度最短的二叉树。所谓树的带权路径长度，就是树中所有的叶结点的权值乘上其到根结点的路径长度（若根结点为0层，叶结点到根结点的路径长度为叶结点的层数）。树的带权路径长度记为WPL=(W1<em>L1+W2</em>L2+W3<em>L3+…+ Wn</em>Ln)，N个权值Wi(i=1,2,…n)构成一棵有N个叶结点的二叉树，相应的叶结点的路径长度为Li(i=1,2,…n)。可以证明哈夫曼树的WPL是最小的。<br>        <em>构造哈夫曼树的算法如下：</em><br>        1）对给定的n个权值{W1,W2,W3,…,Wi,…,Wn}构成n棵二叉树的初始集合F={T1,T2,T3,…,Ti,…, Tn}，其中每棵二叉树Ti中只有一个权值为Wi的根结点，它的左右子树均为空。<br>        2）在F中选取两棵根结点权值最小的树作为新构造的二叉树的左右子树，新二叉树的根结点的权值为其左右子树的根结点的权值之和。<br>        3）从F中删除这两棵树，并把这棵新的二叉树同样以升序排列加入到集合F中。<br>        4）重复2）和3），直到集合F中只有一棵二叉树为止。</p>
+</blockquote>
+<p>　　简而言之，就是要先知道一系列的权值信息（比如说要编码字符串的每个字符出现频率），然后把它们分别作为哈夫曼树中各个叶子节点的权值，接下来呢就需要由叶子节点来自下往上构造哈夫曼树了。<br>　　构造的思路是这样的：所有的叶子节点构成了最初的森林（所有树的集合），我们可以使用priority_queue对这些树进行管理，使得集合中的数据始终保持着递增的顺序。然后，每次就让前两个元素出队，再构造一个新的节点（树），其权值为出队的两个元素权值之和，左子树为前面第一个元素，右子树为前面第二个元素，这样集合中元素的个数－１。如此做，直至集合中只剩余一个节点（根节点）为止，此时仅有的这棵树便是哈夫曼树。</p>
+<hr>
+<h4 id="以美团的这题为例"><a href="#以美团的这题为例" class="headerlink" title="以美团的这题为例"></a>以美团的这题为例</h4><p>输入</p>
+<blockquote>
+<p>MT-TECH-TEAM</p>
+</blockquote>
+<p>输出</p>
+<blockquote>
+<p>33</p>
+</blockquote>
+<hr>
+<h4 id="具体编码流程如下"><a href="#具体编码流程如下" class="headerlink" title="具体编码流程如下"></a>具体编码流程如下</h4><p><img src="http://img.blog.csdn.net/20170322154930426?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMTUwNzE3NQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="初始状态"> </p>
+<p><img src="http://img.blog.csdn.net/20170322155116740?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMTUwNzE3NQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="执行1次"></p>
+<p><img src="http://img.blog.csdn.net/20170322155227362?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMTUwNzE3NQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="执行2次"></p>
+<p><img src="http://img.blog.csdn.net/20170322155445522?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMTUwNzE3NQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="执行3次"></p>
+<p><img src="http://img.blog.csdn.net/20170322155819854?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMTUwNzE3NQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="执行4次"></p>
+<p><img src="http://img.blog.csdn.net/20170322155942653?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMTUwNzE3NQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="执行5次"></p>
+<p><img src="http://img.blog.csdn.net/20170322160135124?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMTUwNzE3NQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="完成哈夫曼树"></p>
+<p><em>至此，哈夫曼树完成构造，接下来只需要遍历统计即可。</em></p>
+<hr>
+<h4 id="附上具体实现代码"><a href="#附上具体实现代码" class="headerlink" title="附上具体实现代码"></a><strong>附上具体实现代码</strong></h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="comment">/**哈夫曼编码思想**/</span></div><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">char</span> typeChar;</div><div class="line">	<span class="keyword">int</span> rate;</div><div class="line">	Node *leftChild;</div><div class="line">	Node *rightChild;</div><div class="line">&#125;charNode;</div><div class="line"><span class="comment">//存放输入的字符种类</span></div><div class="line"><span class="keyword">char</span> *inputStr;</div><div class="line"><span class="comment">//存放字符节点的数组</span></div><div class="line">Node nodes[<span class="number">200</span> + <span class="number">199</span>];</div><div class="line"><span class="comment">//总的节点数</span></div><div class="line"><span class="keyword">int</span> total;</div><div class="line"><span class="comment">//记录当前所处的深度</span></div><div class="line"><span class="keyword">int</span> depth;</div><div class="line"><span class="comment">//统计数量</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">getNum</span><span class="params">(<span class="keyword">char</span> *in, <span class="keyword">char</span> c)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> times = <span class="number">0</span>;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= <span class="built_in">strlen</span>(in); i++)</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">if</span> (*(in + i) == c) times++;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> times;</div><div class="line">&#125;</div><div class="line"><span class="comment">//统计输入的字符种类(当时写的这方法不好，个人推荐使用hash存储的方式统计)</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">getTypeChar</span><span class="params">(<span class="keyword">char</span> *in)</span></span></div><div class="line">&#123;</div><div class="line">	inputStr = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">char</span>)*<span class="number">200</span>);</div><div class="line">	<span class="built_in">memset</span>(inputStr, <span class="string">'\0'</span>, <span class="keyword">sizeof</span>(inputStr));</div><div class="line">	<span class="keyword">int</span> p = <span class="number">0</span>;</div><div class="line">	<span class="keyword">bool</span> isAdded;</div><div class="line">	<span class="comment">//cout&lt;&lt;strlen(in)&lt;&lt;endl;</span></div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;<span class="built_in">strlen</span>(in); i++)</div><div class="line">	&#123;</div><div class="line">		isAdded = <span class="literal">false</span>;</div><div class="line">		<span class="keyword">if</span> (p == <span class="number">0</span>)</div><div class="line">		&#123;</div><div class="line">			*inputStr = *in;</div><div class="line">			nodes[p].typeChar = *inputStr;</div><div class="line">			nodes[p].rate = getNum(in, *in);</div><div class="line">			nodes[p].leftChild = <span class="literal">NULL</span>;  <span class="comment">//叶节点</span></div><div class="line">			nodes[p].rightChild = <span class="literal">NULL</span>;  <span class="comment">//叶节点</span></div><div class="line">			p++;</div><div class="line">			<span class="keyword">continue</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j&lt;p; j++)</div><div class="line">		&#123;</div><div class="line">			<span class="keyword">if</span> (*(inputStr + j) == *(in + i))</div><div class="line">			&#123;</div><div class="line">				isAdded = <span class="literal">true</span>;</div><div class="line">				<span class="keyword">break</span>;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (!isAdded)</div><div class="line">		&#123;</div><div class="line">			inputStr[p] = *(in + i);</div><div class="line">			nodes[p].typeChar = *(inputStr + p);</div><div class="line">			nodes[p].rate = getNum(in, *(in + i));</div><div class="line">			nodes[p].leftChild = <span class="literal">NULL</span>;  <span class="comment">//叶节点</span></div><div class="line">			nodes[p].rightChild = <span class="literal">NULL</span>;  <span class="comment">//叶节点</span></div><div class="line">			p++;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> p;</div><div class="line">&#125;</div><div class="line"><span class="comment">//给排序函数使用的比较函数</span></div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">compNode</span><span class="params">(<span class="keyword">const</span> Node &amp; node1, <span class="keyword">const</span> Node &amp; node2)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span> (node1.rate &lt;= node2.rate)</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span></div><div class="line">	&#123;</div><div class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//哈夫曼编码</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">huf</span><span class="params">(<span class="keyword">int</span> startIndex, <span class="keyword">int</span> endIndex, <span class="keyword">int</span> length)</span></span></div><div class="line">&#123;</div><div class="line">	sort(nodes + startIndex, nodes + startIndex + length, compNode);</div><div class="line">	nodes[endIndex + <span class="number">1</span>].rate = nodes[startIndex].rate + nodes[startIndex+<span class="number">1</span>].rate;</div><div class="line">	nodes[endIndex + <span class="number">1</span>].leftChild = &amp;nodes[startIndex];</div><div class="line">	nodes[endIndex + <span class="number">1</span>].rightChild = &amp;nodes[startIndex+<span class="number">1</span>];</div><div class="line">	<span class="keyword">if</span> (endIndex + <span class="number">1</span> != total)</div><div class="line">	&#123;</div><div class="line">		huf(startIndex + <span class="number">2</span>, endIndex + <span class="number">1</span>, length - <span class="number">1</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">depthFirst</span><span class="params">(charNode *)</span></span>;</div><div class="line"><span class="comment">//遍历哈夫曼树，计算出编编码长度</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">getCodeLength</span><span class="params">(<span class="keyword">int</span> lastIndex)</span></span></div><div class="line">&#123;</div><div class="line">    charNode *root = &amp;nodes[lastIndex];</div><div class="line">	depth = <span class="number">-1</span>;</div><div class="line">	<span class="keyword">return</span> depthFirst(root);</div><div class="line">&#125;</div><div class="line"><span class="comment">//递归遍历</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">depthFirst</span><span class="params">(charNode *node)</span></span></div><div class="line">&#123;</div><div class="line">    depth++;</div><div class="line">	<span class="keyword">if</span> (node-&gt;leftChild == <span class="literal">NULL</span> &amp;&amp; node-&gt;rightChild == <span class="literal">NULL</span>)</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">return</span> node-&gt;rate * depth;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span></div><div class="line">	&#123;</div><div class="line">		<span class="keyword">int</span> leftSize = depthFirst(node-&gt;leftChild);</div><div class="line">		depth--;</div><div class="line">		<span class="keyword">int</span> rightSize = depthFirst(node-&gt;rightChild);</div><div class="line">		depth--;</div><div class="line">		<span class="keyword">return</span>  leftSize + rightSize;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">char</span> *in;</div><div class="line">	<span class="keyword">int</span> num;  <span class="comment">//不同字符的数量</span></div><div class="line">	in = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">char</span>) * <span class="number">1000</span>);</div><div class="line">	<span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%s"</span>, in) != EOF)</div><div class="line">    &#123;</div><div class="line">        num = getTypeChar(in);</div><div class="line">        <span class="keyword">if</span>(num == <span class="number">1</span>)</div><div class="line">        &#123;</div><div class="line">            <span class="built_in">cout</span>&lt;&lt;<span class="built_in">strlen</span>(in)&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">            <span class="keyword">continue</span>;</div><div class="line">        &#125;</div><div class="line">	    total = num * <span class="number">2</span> - <span class="number">1</span>;</div><div class="line">	    huf(<span class="number">0</span>, num - <span class="number">1</span>, num);</div><div class="line">	    <span class="built_in">cout</span>&lt;&lt;getCodeLength(total<span class="number">-1</span>)&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>如果只是为了AC也不需要写这么复杂。不过此处主要考虑到对 <em>哈夫曼编码</em> 的理解，所以代码方面就自己构造结构体、指针去实现了</li>
+</ul>
+<hr>
+<p><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script></p>
+<h5 id="另外代码中用到的二叉树一个重要性质"><a href="#另外代码中用到的二叉树一个重要性质" class="headerlink" title="另外代码中用到的二叉树一个重要性质"></a>另外代码中用到的<strong>二叉树</strong>一个<strong>重要性质</strong></h5><p>　　　　对于任意二叉树，设拥有叶子结点<strong>ａ</strong>个，二度节点<strong>b</strong>个，则满足： </p>
+<h2 id="a-b-1"><a href="#a-b-1" class="headerlink" title="$$ a = b + 1 $$"></a>$$ a = b + 1 $$</h2>
+            <div class="clearfix"></div>
+            <hr class="nogutter">
+        </div>
+        <nav class="pagination" role="pagination">
+    
+    <a class="pull-left" href="/2017/05/05/2017春招面经-Android移动开发/" style="float: left;">
+        ← 2017春招面经-Android移动开发
+    </a>
+    
+    
+</nav>
+
+        <div class="duoshuo">
+
+
+</div>
+    </div>
+</section>
+
+
+      
+<!-- ============================ Footer =========================== -->
+
+<footer>
+    <div class="container">
+            <div class="copy">
+                <p>
+                    &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yuanshan_xike. All Rights Reserved.
+                </p>
+                <p>Theme By <a href="//go.kieran.top" style="color: #767D84">Kieran</a></p>
+            </div>
+            <div class="social">
+                <ul>
+                    
+                    <li><a href="https://github.com/yuanshanxike" title="Github" target="_blank"><i class="icon-github"></i></a>&nbsp;</li>
+                    
+                    
+                    
+                    
+                    <li><a href="https://google.com/" title="Google-Plus" target="_blank"><i class="icon-google-plus"></i></a>&nbsp;</li>
+                    
+                    
+                    <li><a href="http://weibo.com/p/1005051830084464/home?from=page_100505&mod=TAB&is_all=1#place" title="Sina-Weibo" target="_blank"><i class="icon-sina-weibo"></i></a>&nbsp;</li>
+                    
+                </ul>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+</footer>
+
+<!-- ============================ END Footer =========================== -->
+      <!-- Load our scripts -->
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+    var resizeHero = function () {
+        var hero = $(".cover,.heightblock"),
+            window1 = $(window);
+        hero.css({
+            "height": window1.height()
+        });
+    };
+
+    resizeHero();
+
+    $(window).resize(function () {
+        resizeHero();
+    });
+</script>
+<script src="/js/plugins.min.js"></script><!-- Bootstrap core and concatenated plugins always load here -->
+<script src="/js/jquery.flexslider-min.js"></script><!-- Flexslider plugin -->
+<script src="/js/scripts.js"></script><!-- Theme scripts -->
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$('#intro').find('img').each(function(){
+  var alt = this.alt;
+
+  if (alt){
+    $(this).after('<span class="caption" style="display:none">' + alt + '</span>');
+  }
+
+  $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="gallery" />');
+});
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+<!-- Initiate flexslider plugin -->
+<script type="text/javascript">
+    $(document).ready(function($) {
+      (function(){
+        console.log('font');
+        var getCss = function(path) {
+          var head = document.getElementsByTagName('head')[0];
+          link = document.createElement('link');
+          link.href = path;
+          link.rel = 'stylesheet';
+          link.type = 'text/css';
+          head.appendChild(link);
+        };
+        getCss('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+        getCss('https://fonts.googleapis.com/css?family=Open+Sans:400,600');
+      })();
+      $('.flexslider').flexslider({
+        animation: "fade",
+        prevText: "",
+        nextText: "",
+        directionNav: true
+      });
+    });
+</script>
+
+</body>
+</html>
