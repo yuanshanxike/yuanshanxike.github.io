@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--
+***************  *      *     *
+      8          *    *       *
+      8          *  *         *
+      8          **           *
+      8          *  *         *
+      8          *    *       *
+      8          *      *     *
+      8          *        *   ***********    -----Theme By Kieran(http://go.kieran.top)
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<!--<![endif]-->
+
+<head>
+  <title>K-means实现聚类 | Lewis&#39;s Blog</title>
+  <!-- Meta data -->
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Lewis's Blog">
+    <meta name="author" content="yuanshan_xike">
+    <meta name="description" content="向身边的大佬看齐" />
+    <meta name="keywords" content="" />
+
+    <!-- Favicon, (keep icon in root folder) -->
+    <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+    <link rel="alternate" href="/atom.xmlw" title="Lewis&#39;s Blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+    
+    <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+    
+
+    <!--[if IE 8]>
+    <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+    <![endif]-->
+
+    <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+    <script src="/js/jquery-1.11.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>')</script>
+
+    <!-- Load these in the <head> for quicker IE8+ load times -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv.min.js"></script>
+    <script src="/js/respond.min.js"></script>
+    <![endif]-->
+
+  
+  
+  
+
+  <style>.col-md-8.col-md-offset-2.opening-statement img{display:none;}</style>
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body id="index" class="lightnav animsition">
+
+      <!-- ============================ Off-canvas navigation =========================== -->
+
+    <div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+            <img src="/img/close.png" alt="Close"/>
+        </div>
+        <!-- Lists in Slidebars -->
+        <ul class="sb-menu">
+            <li><a href="/" class="animsition-link" title="Home">Home</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">archives</a></li>
+            <!-- Dropdown Menu -->
+			 
+            <li>
+                <a class="sb-toggle-submenu">Works<span class="sb-caret"></span></a>
+                <ul class="sb-submenu">
+                    
+                        <li><a href="/" target="_BLANK" class="animsition-link">android</a></li>
+                    
+                        <li><a href="/atom.xml" target="_BLANK" class="animsition-link">java</a></li>
+                    
+                </ul>
+            </li>
+            
+            
+            
+            <li>
+                <a class="sb-toggle-submenu">Links<span class="sb-caret"></span></a>
+                <ul class="sb-submenu">
+                    
+                    <li><a href="/homePage/index.html" class="animsition-link">home page</a></li>
+                    
+                    <li><a href="https://github.com/yuanshanxike" class="animsition-link">GitHub</a></li>
+                    
+                    <li><a href="http://git.oschina.net/13108102002" class="animsition-link">OSChina git</a></li>
+                    
+                </ul>
+            </li>
+            
+        </ul>
+        <!-- Lists in Slidebars -->
+        <ul class="sb-menu secondary">
+            <li><a href="/about.html" class="animsition-link" title="about">About</a></li>
+            <li><a href="/atom.xml" class="animsition-link" title="rss">RSS</a></li>
+        </ul>
+    </div>
+    
+    <!-- ============================ END Off-canvas navigation =========================== -->
+
+    <!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+    <div id="sb-site">
+        <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+        <!-- ============================ Header & Logo bar =========================== -->
+
+        <div id="navigation" class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <!-- Nav logo -->
+                    <div class="logo">
+                        <a href="/" title="Logo" class="animsition-link">
+                         <img src="/img/logo.png" alt="Logo" width="35px;"/> 
+                        </a>
+                    </div>
+                    <!-- // Nav logo -->
+                    <!-- Info-bar -->
+                    <nav>
+                        <ul class="nav">
+                            <li><a href="/" class="animsition-link">Lewis's Blog</a></li>
+                            <li class="nolink"><span>Always </span>Creative.</li>
+                            
+                            <li><a href="https://github.com/yuanshanxike" title="Github" target="_blank"><i class="icon-github"></i></a></li>
+                            
+                            
+                            
+                            
+                            <li><a href="https://google.com/" title="Google-Plus" target="_blank"><i class="icon-google-plus"></i></a></li>
+                            
+                            
+                            <li><a href="http://weibo.com/p/1005051830084464/home?from=page_100505&mod=TAB&is_all=1#place" title="Sina-Weibo" target="_blank"><i class="icon-sina-weibo"></i></a></li>
+                            
+                            <li class="nolink"><span>Welcome!</span></li>
+                        </ul>
+                    </nav>
+                    <!--// Info-bar -->
+                </div>
+                <!-- // .container -->
+                <div class="learnmore sb-toggle-right">More</div>
+                <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar before"></span>
+                <span class="icon-bar main"></span>
+                <span class="icon-bar after"></span>
+                </button>
+            </div>
+            <!-- // .navbar-inner -->
+        </div>
+
+        <!-- ============================ Header & Logo bar =========================== -->
+
+
+      
+<section id="intro">
+    <div class="container">
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2017-05-16T08:09:36.000Z" itemprop="datePublished">
+          2017-05-16
+      </time>
+    
+    
+    | 
+    <a href='/tags/数据挖掘/'>数据挖掘</a>,
+    
+    <a href='/tags/算法/'>算法</a>
+    
+    
+</span>
+                <h1>K-means实现聚类</h1>
+            </div>
+        </div>
+        <div class="col-md-8 col-md-offset-2">
+      		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最近的数据挖掘讲座课上讲到了聚类算法<a style="color: #0270bc"><strong>K-means</strong></a>，数据挖掘在近一两年内很火，本人对这方面的技术也比较感兴趣，索性写篇博客记录一下，同时加深一下理解。</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;k-平均算法源于信号处理中的一种向量量化方法，现在则更多地作为一种聚类分析方法流行于数据挖掘领域。k-平均聚类的目的是：把 <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/a601995d55609f2d9f5e233e36fbe9ea26011b3b" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.338ex; width:1.405ex; height:1.676ex;" alt="n">个点（可以是样本的一次观察或一个实例）划分到k个聚类中，使得每个点都属于离他最近的均值（此即聚类中心）对应的聚类，以之作为聚类的标准。这个问题将归结为一个把数据空间划分为Voronoi cells的问题。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这个问题在计算上是困难的（<a style="color: #0270bc">NP困难</a>），不过存在高效的启发式算法。一般情况下，都使用效率比较高的启发式算法，它们能够快速收敛于一个<a style="color: #be3f3f">局部最优解</a>。这些算法通常类似于通过迭代优化方法处理高斯混合分布的最大期望算法（EM算法）。而且，它们都使用聚类中心来为数据建模；然而k-平均聚类倾向于在可比较的空间范围内寻找聚类，期望-最大化技术却允许聚类有不同的形状。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th style="text-align:center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th style="text-align:center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th style="text-align:left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right"><a style="color: #9999b3">中文名</a></td>
+<td style="text-align:center">K均值</td>
+<td style="text-align:center"><a style="color: #9999b3">优&nbsp;&nbsp;&nbsp;点</a></td>
+<td style="text-align:left">确定的K个划分到达平方误差最小</td>
+</tr>
+<tr>
+<td style="text-align:right"><a style="color: #9999b3">外文名</a></td>
+<td style="text-align:center">K-means</td>
+<td style="text-align:center"><a style="color: #9999b3">缺&nbsp;&nbsp;&nbsp;点</a></td>
+<td style="text-align:left">K 值的选定是非常难以估计的</td>
+</tr>
+<tr>
+<td style="text-align:right"><a style="color: #9999b3">相似度测度</a></td>
+<td style="text-align:center">欧氏距离</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已知观测集<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/2730974584852a817e6ca24fda937c5896540888">，其中每个观测都是一个d-维实向量，k-平均聚类要把这n个观测划分到k个集合中(k≤n),使得组内平方和（WCSS within-cluster sum of squares）最小。换句话说，它的目标是找到使得下式满足的聚类<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/de6e810a93f67802ecb603ee0e3324005c6e583e">，</p>
+<p><center><br>       <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/debd28209802c22a6e6a1d74d099f728e6bd17a4"><br></center><br>其中<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/dea0a0293841cce9eef98b55e53a92b82ae59ee4">是<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/de6e810a93f67802ecb603ee0e3324005c6e583e">中所有点的均值。</p>
+<hr>
+<h3 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我是采用<a style="color: #cc0000">Java</a>实现的，不得不说多维数组表示起来各种ArrayList<arraylist<>&gt;的嵌套，写起来十分麻烦，而且可读性差（果断C/C++更适合写算法啊，Java没有 #define 很难受）。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;好了，直接上代码吧，代码中有比较详细的注释，可读性还是比较高的。<em>另外，由于算法本身效率不高(需要根据具体情况优化)和测试数据比较多，且为浮点数，所以在这里限制了算法秩代的次数为100,000次，防止执行时间过长。</em></arraylist<></p>
+<p><strong>K-means:</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Kmeans</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span> dimension;                                   <span class="comment">//维数</span></div><div class="line">	ArrayList&lt;Float&gt; point;                          <span class="comment">//集合中的点</span></div><div class="line">	ArrayList&lt;ArrayList&lt;Float&gt;&gt; clust;               <span class="comment">//簇</span></div><div class="line">	ArrayList&lt;ArrayList&lt;ArrayList&lt;Float&gt;&gt;&gt; set;      <span class="comment">//集合</span></div><div class="line">    <span class="keyword">int</span> K;                                           <span class="comment">//需要聚类成簇的个数</span></div><div class="line">    ArrayList&lt;ArrayList&lt;Float&gt;&gt; meanValues;          <span class="comment">//均值点</span></div><div class="line">    </div><div class="line">    ArrayList&lt;ArrayList&lt;Float&gt;&gt; data;                <span class="comment">//初始数据</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Kmeans</span><span class="params">(<span class="keyword">int</span> dimension, <span class="keyword">int</span> K)</span></span>&#123;</div><div class="line">    	<span class="keyword">this</span>.dimension = dimension;</div><div class="line">    	<span class="keyword">this</span>.K = K;</div><div class="line">    	set = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;K; i++)&#123;</div><div class="line">    		set.add(<span class="keyword">new</span> ArrayList&lt;ArrayList&lt;Float&gt;&gt;());</div><div class="line">    	&#125;</div><div class="line">	&#125;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">initData</span><span class="params">(ArrayList&lt;ArrayList&lt;Float&gt;&gt; data)</span></span>&#123;</div><div class="line">    	<span class="keyword">this</span>.data = data;</div><div class="line">    	randomInitmManValues();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 随机初始化均值点(分别取下标为0,50,100的点作为三个初始均值点)</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">randomInitmManValues</span><span class="params">()</span></span>&#123;</div><div class="line">    	meanValues = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    	<span class="keyword">int</span> index=<span class="number">0</span>;</div><div class="line">    	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;K; i++)&#123;</div><div class="line">    		meanValues.add(data.get(index));</div><div class="line">    		index += <span class="number">50</span>;</div><div class="line">    	&#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 求欧式距离,判断后放入所属的簇</div><div class="line">     * <span class="doctag">@param</span> dataPoint 需要计算欧式距离的数据点</div><div class="line">     * <span class="doctag">@param</span> index     该数据点所属的簇在原set中的序号</div><div class="line">     */</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">putPointIntoClust</span><span class="params">(ArrayList&lt;Float&gt; dataPoint, <span class="keyword">int</span> index)</span></span>&#123;</div><div class="line">    	<span class="keyword">double</span> dis = Double.MAX_VALUE;</div><div class="line">    	<span class="keyword">int</span> idex = -<span class="number">1</span>;</div><div class="line">    	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;K; i++)&#123;                                      <span class="comment">//分别求出到K个点的距离</span></div><div class="line">    		point = meanValues.get(i);</div><div class="line">    		<span class="keyword">double</span> sum = <span class="number">0</span>;</div><div class="line">    		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;point.size(); j++)&#123;                       <span class="comment">//算维度差的平方和</span></div><div class="line">    			sum += (dataPoint.get(j) - point.get(j)) * (dataPoint.get(j) - point.get(j));</div><div class="line">    		&#125;</div><div class="line">    		<span class="keyword">double</span> sqrtSum = Math.sqrt(sum);</div><div class="line">    		<span class="keyword">if</span>(sqrtSum &lt; dis)&#123;</div><div class="line">    			dis = sqrtSum;</div><div class="line">    			idex = i;                                            <span class="comment">//记录最近的平均点所在簇的index</span></div><div class="line">    		&#125;</div><div class="line">    	&#125;</div><div class="line">    	<span class="keyword">if</span>(idex != -<span class="number">1</span> &amp;&amp; !set.get(idex).contains(dataPoint))&#123;        <span class="comment">//如果第i个簇中不包含这个数据点</span></div><div class="line">			set.get(index).remove(dataPoint);                        <span class="comment">//从原簇中删除这个数据点</span></div><div class="line">			set.get(idex).add(dataPoint);                            <span class="comment">//将该数据点放入第i个簇中</span></div><div class="line">		&#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 求出簇的均值点</div><div class="line">     * <span class="doctag">@param</span> index 所计算那个簇对于set的index</div><div class="line">     * <span class="doctag">@return</span> 均值点</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> ArrayList&lt;Float&gt; <span class="title">getMeanValue</span><span class="params">(<span class="keyword">int</span> index)</span></span>&#123;</div><div class="line">    	ArrayList&lt;Float&gt; meanValue = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;point.size(); i++)&#123;                                  <span class="comment">//初始化 meanValue各个维度的值</span></div><div class="line">    		meanValue.add((<span class="keyword">float</span>) <span class="number">0</span>);</div><div class="line">    	&#125;</div><div class="line">    	</div><div class="line">    	<span class="keyword">for</span>(ArrayList&lt;Float&gt; point : set.get(index))&#123;                       <span class="comment">//对簇中的各个点求和</span></div><div class="line">    		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;point.size(); i++)&#123;</div><div class="line">    			meanValue.set(i, meanValue.get(i) + point.get(i));</div><div class="line">    		&#125;</div><div class="line">    	&#125;</div><div class="line">    	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;meanValue.size(); i++)&#123;                              <span class="comment">//求该簇的均值点</span></div><div class="line">    		meanValue.set(i, meanValue.get(i) / set.get(index).size());</div><div class="line">    	&#125;</div><div class="line">    	<span class="keyword">return</span> meanValue;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">/**</span></div><div class="line">     * K-means实现</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">k_means</span><span class="params">()</span></span>&#123;</div><div class="line">    	<span class="keyword">int</span> mod = data.size()%K==<span class="number">0</span> ? data.size()/K : data.size()/K+<span class="number">1</span>;</div><div class="line">    	<span class="keyword">int</span> idex = <span class="number">0</span>;</div><div class="line">    	<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;data.size(); j++)&#123;                                   <span class="comment">//把data中的数据放入平均的放入簇中</span></div><div class="line">			set.get(idex).add(data.get(j));</div><div class="line">			<span class="keyword">if</span>(j+<span class="number">1</span> != data.size() &amp;&amp; (j+<span class="number">1</span>) % mod == <span class="number">0</span>) idex++;</div><div class="line">		&#125;</div><div class="line">    	<span class="keyword">int</span> times = <span class="number">0</span>;                                                      <span class="comment">//限定循环的次数，超过1000次则停止</span></div><div class="line">    	<span class="keyword">while</span>(<span class="keyword">true</span>)&#123;                                                        <span class="comment">//K-means算法</span></div><div class="line">    		ArrayList&lt;ArrayList&lt;Float&gt;&gt; meanValues = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;set.size(); i++)&#123;</div><div class="line">    			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;set.get(i).size(); j++)&#123;</div><div class="line">    				putPointIntoClust(set.get(i).get(j), i);</div><div class="line">    			&#125;</div><div class="line">    			meanValues.add(getMeanValue(i));</div><div class="line">    		&#125;</div><div class="line">    		<span class="keyword">if</span>(meanValues.equals(<span class="keyword">this</span>.meanValues) || times &gt;= <span class="number">100000</span>)&#123;</div><div class="line">    			<span class="keyword">break</span>;</div><div class="line">    		&#125;</div><div class="line">    		times++;</div><div class="line">    		System.out.println(<span class="string">"均值点发生移动，继续进行计算！"</span>);</div><div class="line">    	&#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 打印set</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printf</span><span class="params">()</span></span>&#123;</div><div class="line">    	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;set.size(); i++)&#123;</div><div class="line">    		System.out.println(<span class="string">"第"</span>+i+<span class="string">"个簇包含的点："</span>);</div><div class="line">    		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;set.get(i).size(); j++)&#123;</div><div class="line">    			System.out.println((j+<span class="number">1</span>) + <span class="string">" "</span>+ set.get(i).get(j));</div><div class="line">    		&#125;</div><div class="line">    	&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>Test程序:</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.Scanner;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] ss)</span></span>&#123;</div><div class="line">		ArrayList&lt;ArrayList&lt;Float&gt;&gt; data = <span class="keyword">new</span> ArrayList&lt;ArrayList&lt;Float&gt;&gt;();</div><div class="line">		Scanner scanner = <span class="keyword">new</span> Scanner(System.in);</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">150</span>; i++)&#123;</div><div class="line">			data.add(<span class="keyword">new</span> ArrayList&lt;Float&gt;());</div><div class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;<span class="number">4</span>; j++)&#123;</div><div class="line">				data.get(i).add(scanner.nextFloat());</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		scanner.close();</div><div class="line">		Kmeans kmeans = <span class="keyword">new</span> Kmeans(<span class="number">4</span>, <span class="number">3</span>);</div><div class="line">		kmeans.initData(data);</div><div class="line">		kmeans.k_means();</div><div class="line">		kmeans.printf();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>测试数据:</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div></pre></td><td class="code"><pre><div class="line">5.1 3.5 1.4 0.2</div><div class="line">4.9 3.0 1.4 0.2</div><div class="line">4.7 3.2 1.3 0.2</div><div class="line">4.6 3.1 1.5 0.2</div><div class="line">5.0 3.6 1.4 0.2</div><div class="line">5.4 3.9 1.7 0.4</div><div class="line">4.6 3.4 1.4 0.3</div><div class="line">5.0 3.4 1.5 0.2</div><div class="line">4.4 2.9 1.4 0.2</div><div class="line">4.9 3.1 1.5 0.1</div><div class="line">5.4 3.7 1.5 0.2</div><div class="line">4.8 3.4 1.6 0.2</div><div class="line">4.8 3.0 1.4 0.1</div><div class="line">4.3 3.0 1.1 0.1</div><div class="line">5.8 4.0 1.2 0.2</div><div class="line">5.7 4.4 1.5 0.4</div><div class="line">5.4 3.9 1.3 0.4</div><div class="line">5.1 3.5 1.4 0.3</div><div class="line">5.7 3.8 1.7 0.3</div><div class="line">5.1 3.8 1.5 0.3</div><div class="line">5.4 3.4 1.7 0.2</div><div class="line">5.1 3.7 1.5 0.4</div><div class="line">4.6 3.6 1.0 0.2</div><div class="line">5.1 3.3 1.7 0.5</div><div class="line">4.8 3.4 1.9 0.2</div><div class="line">5.0 3.0 1.6 0.2</div><div class="line">5.0 3.4 1.6 0.4</div><div class="line">5.2 3.5 1.5 0.2</div><div class="line">5.2 3.4 1.4 0.2</div><div class="line">4.7 3.2 1.6 0.2</div><div class="line">4.8 3.1 1.6 0.2</div><div class="line">5.4 3.4 1.5 0.4</div><div class="line">5.2 4.1 1.5 0.1</div><div class="line">5.5 4.2 1.4 0.2</div><div class="line">4.9 3.1 1.5 0.2</div><div class="line">5.0 3.2 1.2 0.2</div><div class="line">5.5 3.5 1.3 0.2</div><div class="line">4.9 3.6 1.4 0.1</div><div class="line">4.4 3.0 1.3 0.2</div><div class="line">5.1 3.4 1.5 0.2</div><div class="line">5.0 3.5 1.3 0.3</div><div class="line">4.5 2.3 1.3 0.3</div><div class="line">4.4 3.2 1.3 0.2</div><div class="line">5.0 3.5 1.6 0.6</div><div class="line">5.1 3.8 1.9 0.4</div><div class="line">4.8 3.0 1.4 0.3</div><div class="line">5.1 3.8 1.6 0.2</div><div class="line">4.6 3.2 1.4 0.2</div><div class="line">5.3 3.7 1.5 0.2</div><div class="line">5.0 3.3 1.4 0.2</div><div class="line">7.0 3.2 4.7 1.4 </div><div class="line">6.4 3.2 4.5 1.5 </div><div class="line">6.9 3.1 4.9 1.5 </div><div class="line">5.5 2.3 4.0 1.3 </div><div class="line">6.5 2.8 4.6 1.5 </div><div class="line">5.7 2.8 4.5 1.3 </div><div class="line">6.3 3.3 4.7 1.6 </div><div class="line">4.9 2.4 3.3 1.0 </div><div class="line">6.6 2.9 4.6 1.3 </div><div class="line">5.2 2.7 3.9 1.4 </div><div class="line">5.0 2.0 3.5 1.0 </div><div class="line">5.9 3.0 4.2 1.5 </div><div class="line">6.0 2.2 4.0 1.0 </div><div class="line">6.1 2.9 4.7 1.4 </div><div class="line">5.6 2.9 3.6 1.3 </div><div class="line">6.7 3.1 4.4 1.4 </div><div class="line">5.6 3.0 4.5 1.5 </div><div class="line">5.8 2.7 4.1 1.0 </div><div class="line">6.2 2.2 4.5 1.5 </div><div class="line">5.6 2.5 3.9 1.1 </div><div class="line">5.9 3.2 4.8 1.8 </div><div class="line">6.1 2.8 4.0 1.3 </div><div class="line">6.3 2.5 4.9 1.5 </div><div class="line">6.1 2.8 4.7 1.2 </div><div class="line">6.4 2.9 4.3 1.3 </div><div class="line">6.6 3.0 4.4 1.4 </div><div class="line">6.8 2.8 4.8 1.4 </div><div class="line">6.7 3.0 5.0 1.7 </div><div class="line">6.0 2.9 4.5 1.5 </div><div class="line">5.7 2.6 3.5 1.0 </div><div class="line">5.5 2.4 3.8 1.1 </div><div class="line">5.5 2.4 3.7 1.0 </div><div class="line">5.8 2.7 3.9 1.2 </div><div class="line">6.0 2.7 5.1 1.6 </div><div class="line">5.4 3.0 4.5 1.5 </div><div class="line">6.0 3.4 4.5 1.6 </div><div class="line">6.7 3.1 4.7 1.5 </div><div class="line">6.3 2.3 4.4 1.3 </div><div class="line">5.6 3.0 4.1 1.3 </div><div class="line">5.5 2.5 4.0 1.3 </div><div class="line">5.5 2.6 4.4 1.2 </div><div class="line">6.1 3.0 4.6 1.4 </div><div class="line">5.8 2.6 4.0 1.2 </div><div class="line">5.0 2.3 3.3 1.0 </div><div class="line">5.6 2.7 4.2 1.3 </div><div class="line">5.7 3.0 4.2 1.2 </div><div class="line">5.7 2.9 4.2 1.3 </div><div class="line">6.2 2.9 4.3 1.3 </div><div class="line">5.1 2.5 3.0 1.1 </div><div class="line">5.7 2.8 4.1 1.3 </div><div class="line">6.3 3.3 6.0 2.5</div><div class="line">5.8 2.7 5.1 1.9</div><div class="line">7.1 3.0 5.9 2.1</div><div class="line">6.3 2.9 5.6 1.8</div><div class="line">6.5 3.0 5.8 2.2</div><div class="line">7.6 3.0 6.6 2.1</div><div class="line">4.9 2.5 4.5 1.7</div><div class="line">7.3 2.9 6.3 1.8</div><div class="line">6.7 2.5 5.8 1.8</div><div class="line">7.2 3.6 6.1 2.5</div><div class="line">6.5 3.2 5.1 2.0</div><div class="line">6.4 2.7 5.3 1.9</div><div class="line">6.8 3.0 5.5 2.1</div><div class="line">5.7 2.5 5.0 2.0</div><div class="line">5.8 2.8 5.1 2.4</div><div class="line">6.4 3.2 5.3 2.3</div><div class="line">6.5 3.0 5.5 1.8</div><div class="line">7.7 3.8 6.7 2.2</div><div class="line">7.7 2.6 6.9 2.3</div><div class="line">6.0 2.2 5.0 1.5</div><div class="line">6.9 3.2 5.7 2.3</div><div class="line">5.6 2.8 4.9 2.0</div><div class="line">7.7 2.8 6.7 2.0</div><div class="line">6.3 2.7 4.9 1.8</div><div class="line">6.7 3.3 5.7 2.1</div><div class="line">7.2 3.2 6.0 1.8</div><div class="line">6.2 2.8 4.8 1.8</div><div class="line">6.1 3.0 4.9 1.8</div><div class="line">6.4 2.8 5.6 2.1</div><div class="line">7.2 3.0 5.8 1.6</div><div class="line">7.4 2.8 6.1 1.9</div><div class="line">7.9 3.8 6.4 2.0</div><div class="line">6.4 2.8 5.6 2.2</div><div class="line">6.3 2.8 5.1 1.5</div><div class="line">6.1 2.6 5.6 1.4</div><div class="line">7.7 3.0 6.1 2.3</div><div class="line">6.3 3.4 5.6 2.4</div><div class="line">6.4 3.1 5.5 1.8</div><div class="line">6.0 3.0 4.8 1.8</div><div class="line">6.9 3.1 5.4 2.1</div><div class="line">6.7 3.1 5.6 2.4</div><div class="line">6.9 3.1 5.1 2.3</div><div class="line">5.8 2.7 5.1 1.9</div><div class="line">6.8 3.2 5.9 2.3</div><div class="line">6.7 3.3 5.7 2.5</div><div class="line">6.7 3.0 5.2 2.3</div><div class="line">6.3 2.5 5.0 1.9</div><div class="line">6.5 3.0 5.2 2.0</div><div class="line">6.2 3.4 5.4 2.3</div><div class="line">5.9 3.0 5.1 1.8</div></pre></td></tr></table></figure></p>
+<p><strong>运行结果:</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div></pre></td><td class="code"><pre><div class="line">第0个簇包含的点：</div><div class="line">1 [5.1, 3.5, 1.4, 0.2]</div><div class="line">2 [4.9, 3.0, 1.4, 0.2]</div><div class="line">3 [4.7, 3.2, 1.3, 0.2]</div><div class="line">4 [4.6, 3.1, 1.5, 0.2]</div><div class="line">5 [5.0, 3.6, 1.4, 0.2]</div><div class="line">6 [5.4, 3.9, 1.7, 0.4]</div><div class="line">7 [4.6, 3.4, 1.4, 0.3]</div><div class="line">8 [5.0, 3.4, 1.5, 0.2]</div><div class="line">9 [4.4, 2.9, 1.4, 0.2]</div><div class="line">10 [4.9, 3.1, 1.5, 0.1]</div><div class="line">11 [5.4, 3.7, 1.5, 0.2]</div><div class="line">12 [4.8, 3.4, 1.6, 0.2]</div><div class="line">13 [4.8, 3.0, 1.4, 0.1]</div><div class="line">14 [4.3, 3.0, 1.1, 0.1]</div><div class="line">15 [5.8, 4.0, 1.2, 0.2]</div><div class="line">16 [5.7, 4.4, 1.5, 0.4]</div><div class="line">17 [5.4, 3.9, 1.3, 0.4]</div><div class="line">18 [5.1, 3.5, 1.4, 0.3]</div><div class="line">19 [5.7, 3.8, 1.7, 0.3]</div><div class="line">20 [5.1, 3.8, 1.5, 0.3]</div><div class="line">21 [5.4, 3.4, 1.7, 0.2]</div><div class="line">22 [5.1, 3.7, 1.5, 0.4]</div><div class="line">23 [4.6, 3.6, 1.0, 0.2]</div><div class="line">24 [5.1, 3.3, 1.7, 0.5]</div><div class="line">25 [4.8, 3.4, 1.9, 0.2]</div><div class="line">26 [5.0, 3.0, 1.6, 0.2]</div><div class="line">27 [5.0, 3.4, 1.6, 0.4]</div><div class="line">28 [5.2, 3.5, 1.5, 0.2]</div><div class="line">29 [5.2, 3.4, 1.4, 0.2]</div><div class="line">30 [4.7, 3.2, 1.6, 0.2]</div><div class="line">31 [4.8, 3.1, 1.6, 0.2]</div><div class="line">32 [5.4, 3.4, 1.5, 0.4]</div><div class="line">33 [5.2, 4.1, 1.5, 0.1]</div><div class="line">34 [5.5, 4.2, 1.4, 0.2]</div><div class="line">35 [4.9, 3.1, 1.5, 0.2]</div><div class="line">36 [5.0, 3.2, 1.2, 0.2]</div><div class="line">37 [5.5, 3.5, 1.3, 0.2]</div><div class="line">38 [4.9, 3.6, 1.4, 0.1]</div><div class="line">39 [4.4, 3.0, 1.3, 0.2]</div><div class="line">40 [5.1, 3.4, 1.5, 0.2]</div><div class="line">41 [5.0, 3.5, 1.3, 0.3]</div><div class="line">42 [4.5, 2.3, 1.3, 0.3]</div><div class="line">43 [4.4, 3.2, 1.3, 0.2]</div><div class="line">44 [5.0, 3.5, 1.6, 0.6]</div><div class="line">45 [5.1, 3.8, 1.9, 0.4]</div><div class="line">46 [4.8, 3.0, 1.4, 0.3]</div><div class="line">47 [5.1, 3.8, 1.6, 0.2]</div><div class="line">48 [4.6, 3.2, 1.4, 0.2]</div><div class="line">49 [5.3, 3.7, 1.5, 0.2]</div><div class="line">50 [5.0, 3.3, 1.4, 0.2]</div><div class="line">51 [4.9, 2.4, 3.3, 1.0]</div><div class="line">52 [5.0, 2.3, 3.3, 1.0]</div><div class="line">53 [5.1, 2.5, 3.0, 1.1]</div><div class="line"></div><div class="line">第1个簇包含的点：</div><div class="line">1 [7.0, 3.2, 4.7, 1.4]</div><div class="line">2 [6.4, 3.2, 4.5, 1.5]</div><div class="line">3 [6.9, 3.1, 4.9, 1.5]</div><div class="line">4 [5.5, 2.3, 4.0, 1.3]</div><div class="line">5 [6.5, 2.8, 4.6, 1.5]</div><div class="line">6 [5.7, 2.8, 4.5, 1.3]</div><div class="line">7 [6.3, 3.3, 4.7, 1.6]</div><div class="line">8 [6.6, 2.9, 4.6, 1.3]</div><div class="line">9 [5.2, 2.7, 3.9, 1.4]</div><div class="line">10 [5.0, 2.0, 3.5, 1.0]</div><div class="line">11 [5.9, 3.0, 4.2, 1.5]</div><div class="line">12 [6.0, 2.2, 4.0, 1.0]</div><div class="line">13 [6.1, 2.9, 4.7, 1.4]</div><div class="line">14 [5.6, 2.9, 3.6, 1.3]</div><div class="line">15 [6.7, 3.1, 4.4, 1.4]</div><div class="line">16 [5.6, 3.0, 4.5, 1.5]</div><div class="line">17 [5.8, 2.7, 4.1, 1.0]</div><div class="line">18 [6.2, 2.2, 4.5, 1.5]</div><div class="line">19 [5.6, 2.5, 3.9, 1.1]</div><div class="line">20 [5.9, 3.2, 4.8, 1.8]</div><div class="line">21 [6.1, 2.8, 4.0, 1.3]</div><div class="line">22 [6.3, 2.5, 4.9, 1.5]</div><div class="line">23 [6.1, 2.8, 4.7, 1.2]</div><div class="line">24 [6.4, 2.9, 4.3, 1.3]</div><div class="line">25 [6.6, 3.0, 4.4, 1.4]</div><div class="line">26 [6.8, 2.8, 4.8, 1.4]</div><div class="line">27 [6.7, 3.0, 5.0, 1.7]</div><div class="line">28 [6.0, 2.9, 4.5, 1.5]</div><div class="line">29 [5.7, 2.6, 3.5, 1.0]</div><div class="line">30 [5.5, 2.4, 3.8, 1.1]</div><div class="line">31 [5.5, 2.4, 3.7, 1.0]</div><div class="line">32 [5.8, 2.7, 3.9, 1.2]</div><div class="line">33 [6.0, 2.7, 5.1, 1.6]</div><div class="line">34 [5.4, 3.0, 4.5, 1.5]</div><div class="line">35 [6.0, 3.4, 4.5, 1.6]</div><div class="line">36 [6.7, 3.1, 4.7, 1.5]</div><div class="line">37 [6.3, 2.3, 4.4, 1.3]</div><div class="line">38 [5.6, 3.0, 4.1, 1.3]</div><div class="line">39 [5.5, 2.5, 4.0, 1.3]</div><div class="line">40 [5.5, 2.6, 4.4, 1.2]</div><div class="line">41 [6.1, 3.0, 4.6, 1.4]</div><div class="line">42 [5.8, 2.6, 4.0, 1.2]</div><div class="line">43 [5.6, 2.7, 4.2, 1.3]</div><div class="line">44 [5.7, 3.0, 4.2, 1.2]</div><div class="line">45 [5.7, 2.9, 4.2, 1.3]</div><div class="line">46 [6.2, 2.9, 4.3, 1.3]</div><div class="line">47 [5.7, 2.8, 4.1, 1.3]</div><div class="line">48 [4.9, 2.5, 4.5, 1.7]</div><div class="line">49 [6.5, 3.2, 5.1, 2.0]</div><div class="line">50 [6.0, 2.2, 5.0, 1.5]</div><div class="line">51 [6.3, 2.7, 4.9, 1.8]</div><div class="line">52 [6.2, 2.8, 4.8, 1.8]</div><div class="line">53 [7.2, 3.0, 5.8, 1.6]</div><div class="line">54 [6.3, 2.8, 5.1, 1.5]</div><div class="line">55 [6.0, 3.0, 4.8, 1.8]</div><div class="line">56 [6.9, 3.1, 5.1, 2.3]</div><div class="line">57 [6.3, 2.5, 5.0, 1.9]</div><div class="line">58 [6.1, 3.0, 4.9, 1.8]</div><div class="line">59 [6.5, 3.0, 5.2, 2.0]</div><div class="line"></div><div class="line">第2个簇包含的点：</div><div class="line">1 [6.3, 3.3, 6.0, 2.5]</div><div class="line">2 [5.8, 2.7, 5.1, 1.9]</div><div class="line">3 [7.1, 3.0, 5.9, 2.1]</div><div class="line">4 [6.3, 2.9, 5.6, 1.8]</div><div class="line">5 [6.5, 3.0, 5.8, 2.2]</div><div class="line">6 [7.6, 3.0, 6.6, 2.1]</div><div class="line">7 [7.3, 2.9, 6.3, 1.8]</div><div class="line">8 [6.7, 2.5, 5.8, 1.8]</div><div class="line">9 [7.2, 3.6, 6.1, 2.5]</div><div class="line">10 [6.4, 2.7, 5.3, 1.9]</div><div class="line">11 [6.8, 3.0, 5.5, 2.1]</div><div class="line">12 [5.7, 2.5, 5.0, 2.0]</div><div class="line">13 [5.8, 2.8, 5.1, 2.4]</div><div class="line">14 [6.4, 3.2, 5.3, 2.3]</div><div class="line">15 [6.5, 3.0, 5.5, 1.8]</div><div class="line">16 [7.7, 3.8, 6.7, 2.2]</div><div class="line">17 [7.7, 2.6, 6.9, 2.3]</div><div class="line">18 [6.9, 3.2, 5.7, 2.3]</div><div class="line">19 [5.6, 2.8, 4.9, 2.0]</div><div class="line">20 [7.7, 2.8, 6.7, 2.0]</div><div class="line">21 [6.7, 3.3, 5.7, 2.1]</div><div class="line">22 [7.2, 3.2, 6.0, 1.8]</div><div class="line">23 [6.4, 2.8, 5.6, 2.1]</div><div class="line">24 [7.4, 2.8, 6.1, 1.9]</div><div class="line">25 [7.9, 3.8, 6.4, 2.0]</div><div class="line">26 [6.4, 2.8, 5.6, 2.2]</div><div class="line">27 [6.1, 2.6, 5.6, 1.4]</div><div class="line">28 [7.7, 3.0, 6.1, 2.3]</div><div class="line">29 [6.3, 3.4, 5.6, 2.4]</div><div class="line">30 [6.4, 3.1, 5.5, 1.8]</div><div class="line">31 [6.9, 3.1, 5.4, 2.1]</div><div class="line">32 [6.7, 3.1, 5.6, 2.4]</div><div class="line">33 [5.8, 2.7, 5.1, 1.9]</div><div class="line">34 [6.8, 3.2, 5.9, 2.3]</div><div class="line">35 [6.7, 3.3, 5.7, 2.5]</div><div class="line">36 [6.7, 3.0, 5.2, 2.3]</div><div class="line">37 [6.2, 3.4, 5.4, 2.3]</div><div class="line">38 [5.9, 3.0, 5.1, 1.8]</div></pre></td></tr></table></figure></p>
+<p><em>结果可能会存在一定误差。</em></p>
+
+            <div class="clearfix"></div>
+            <hr class="nogutter">
+        </div>
+        <nav class="pagination" role="pagination">
+    
+    
+    <a class="pull-right" href="/2017/05/16/TCP三次握手和四次挥手中的套接字/">
+        关于TCP连接三次握手中 "监听套接字" 和 "连接套接字" 的一些思考 →
+    </a>
+    
+</nav>
+
+        <div class="duoshuo">
+
+
+</div>
+    </div>
+</section>
+
+
+      
+<!-- ============================ Footer =========================== -->
+
+<footer>
+    <div class="container">
+            <div class="copy">
+                <p>
+                    &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yuanshan_xike. All Rights Reserved.
+                </p>
+                <p>Theme By <a href="//go.kieran.top" style="color: #767D84">Kieran</a></p>
+            </div>
+            <div class="social">
+                <ul>
+                    
+                    <li><a href="https://github.com/yuanshanxike" title="Github" target="_blank"><i class="icon-github"></i></a>&nbsp;</li>
+                    
+                    
+                    
+                    
+                    <li><a href="https://google.com/" title="Google-Plus" target="_blank"><i class="icon-google-plus"></i></a>&nbsp;</li>
+                    
+                    
+                    <li><a href="http://weibo.com/p/1005051830084464/home?from=page_100505&mod=TAB&is_all=1#place" title="Sina-Weibo" target="_blank"><i class="icon-sina-weibo"></i></a>&nbsp;</li>
+                    
+                </ul>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+</footer>
+
+<!-- ============================ END Footer =========================== -->
+      <!-- Load our scripts -->
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+    var resizeHero = function () {
+        var hero = $(".cover,.heightblock"),
+            window1 = $(window);
+        hero.css({
+            "height": window1.height()
+        });
+    };
+
+    resizeHero();
+
+    $(window).resize(function () {
+        resizeHero();
+    });
+</script>
+<script src="/js/plugins.min.js"></script><!-- Bootstrap core and concatenated plugins always load here -->
+<script src="/js/jquery.flexslider-min.js"></script><!-- Flexslider plugin -->
+<script src="/js/scripts.js"></script><!-- Theme scripts -->
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$('#intro').find('img').each(function(){
+  var alt = this.alt;
+
+  if (alt){
+    $(this).after('<span class="caption" style="display:none">' + alt + '</span>');
+  }
+
+  $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="gallery" />');
+});
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+<!-- Initiate flexslider plugin -->
+<script type="text/javascript">
+    $(document).ready(function($) {
+      (function(){
+        console.log('font');
+        var getCss = function(path) {
+          var head = document.getElementsByTagName('head')[0];
+          link = document.createElement('link');
+          link.href = path;
+          link.rel = 'stylesheet';
+          link.type = 'text/css';
+          head.appendChild(link);
+        };
+        getCss('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+        getCss('https://fonts.googleapis.com/css?family=Open+Sans:400,600');
+      })();
+      $('.flexslider').flexslider({
+        animation: "fade",
+        prevText: "",
+        nextText: "",
+        directionNav: true
+      });
+    });
+</script>
+
+</body>
+</html>
