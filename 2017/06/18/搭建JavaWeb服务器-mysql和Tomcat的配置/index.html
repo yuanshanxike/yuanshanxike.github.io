@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>智能指针 | Lewis&#39;s Blog</title>
+  <title>搭建JavaWeb服务器-mysql和Tomcat的配置 | Lewis&#39;s Blog</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -170,38 +170,88 @@
         <div class="row col-md-offset-2">
             <div class="col-md-8">
     			<span class="post-meta">
-      <time datetime="2017-05-21T10:45:37.000Z" itemprop="datePublished">
-          2017-05-21
+      <time datetime="2017-06-18T06:27:01.000Z" itemprop="datePublished">
+          2017-06-18
       </time>
     
     
     | 
-    <a href='/tags/android/'>android</a>,
-    
-    <a href='/tags/读书笔记/'>读书笔记</a>
+    <a href='/tags/JavaWeb/'>JavaWeb</a>
     
     
 </span>
-                <h1>智能指针</h1>
+                <h1>搭建JavaWeb服务器-mysql和Tomcat的配置</h1>
             </div>
         </div>
         <div class="col-md-8 col-md-offset-2">
-      		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最近在研读Android系统的源码的相关书籍，所讲内容几乎是涵盖了从Kernel(Linux内核)层之上的运行时库到 Framwork层的各种核心模块，这部分可以说是Android系统的精髓部分。花了一两周才把硬件抽象层和智能指针读完，各种C++代码——神乎其技的宏定义、模板类、操作符重载、返回引用的函数……反正之前没选学C++的我面对这些古怪语法是看的有些晕了，底层的代码写得都很巧妙，有些地方的逻辑也是比较复杂，但我还是坚持着把它看了，遇到不太懂的语法就用搜索引擎去查，其过程真的是很艰辛啊&nbsp;ㄒoㄒ&nbsp;，但看完之后收获是挺大的。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OK，不扯那么多了，开始做笔记吧。</p>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><em>本文大部分内容将引用到老罗的博客（<a herf="http://blog.csdn.net/luoshengyang/article/details/6786239" style="color:#0271bc">http://blog.csdn.net/luoshengyang/article/details/6786239</a>）</em></p>
-<p>&gt;</p>
+      		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;近段时间，因为“信息系统开发这门课程”的需要，自学了一下JavaWeb的相关知识，其中涉及到了Linux、计算机网络、JavaEE的相关知识，运用到了<strong>Ubuntu+Tomcat+MySql</strong>的框架组合，一开始还以为要自己写Socket，结果Tomcat帮你封装好了，总体上来讲是比较容易入门的，毕竟有Android上的Java语言基础。但Tomcat和MySQL配置起来还是遇到了很多坑，因此写下此篇心得，避免下次配置时再次踩坑。   <em>目标——全栈工程师</em></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我用的是腾讯云的云主机——学生优惠版&nbsp;2核&nbsp;2G&nbsp;Ubuntu16.04，之前用的一个同学的云主机也是腾讯云的，他的是学生限购版1元的——1核，1G（曾安装过图形界面，卡出翔，浏览器都开不了，又卸了），不知道什么原因，配置好了Tomcat之后访问8080端口总是404，至少照着网上不同的几种方法弄了十几次，都是同样的结果，MySQL倒是一直正常。无奈之下只好弃坑，自己买了个，也就是上面介绍配置的这台。这次用自己的来配置就比较顺利了，先<a herf="http://blog.csdn.net/luoshengyang/article/details/6786239" style="color:#0271bc">安装JDK</a>，然后配置Tomcat，再在腾讯云的 <a style="color:#f33d58">安全组</a>里面加入允许 3306 端口的规则，浏览器直接访问 服务器host:8080 ，然后看到了如下图所示的页面则证明成功了：<br><img src="/img/Javaweb/Tomcat8080.png" alt="默认页"></p>
+<p><em>JDK和Tomcat的安装比较常规，这里就不再叙述了</em></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推荐几个JavaWeb开发的利器：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>软件</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> xshell</td>
+<td><img src="/img/Javaweb/xshell.png" alt="img"></td>
+<td>远程连接云主机的Linux系统，通过字符界面进行操作</td>
+</tr>
+<tr>
+<td> FileZilla</td>
+<td><img src="/img/Javaweb/FileZilla.png" alt="img"></td>
+<td>用于传输文件到服务器（从官网下载好JDK和Tomcat的包用它进行传输很好用）</td>
+</tr>
+<tr>
+<td> Naticat for MySql</td>
+<td><img src="/img/Javaweb/Navicat.png" alt="img"></td>
+<td>用于远程连接云主机MaySql和本地连接MySql进行数据库的管理</td>
+</tr>
+<tr>
+<td> Eclipse Jee</td>
+<td><img src="/img/Javaweb/IDE.png" alt="img"></td>
+<td>JavaWeb常用的IDE，和Tomcat配合的比较好</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="MySQL的配置与安装："><a href="#MySQL的配置与安装：" class="headerlink" title="MySQL的配置与安装："></a>MySQL的配置与安装：</h2><p> 1.进入超级用户，并获得环境变量的访问权限<br> <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo su - root</div></pre></td></tr></table></figure></p>
+<p> 2.安装MySQL<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install mysql-server mysql-common</div></pre></td></tr></table></figure></p>
+<p> 3.安装好了之后登陆MySQL，要用到之前设置的密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uroot -p</div></pre></td></tr></table></figure></p>
+<p><img src="/img/Javaweb/sql登入.png" alt="img"></p>
+<p>4.进入到mysql.user，发现只有默认的几个用户，并且基本只允许localhost访问<br><img src="/img/Javaweb/MySqlopt1.png" alt="img"><br><img src="/img/Javaweb/MySqlopt2.png" alt="img"></p>
+<p>5.创建数据库用户（此处，用户名为：username，密码为：123456，允许所有IP地址访问——“%”，允许访问所有数据库——*.*）<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">grant</span> all <span class="keyword">privileges</span> <span class="keyword">on</span> *.* <span class="keyword">to</span> username@<span class="string">"%"</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">"123456"</span> ;</div></pre></td></tr></table></figure></p>
+<p>6.让改动立即生效<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</div></pre></td></tr></table></figure></p>
+<p>7.查看user表里的数据，多了一个用户username，所有IP可以通过这一用户访问这个数据库<br><img src="/img/Javaweb/MySqlopt3.png" alt="img"></p>
+<p>8.此时可以去尝试使用Navicat连接数据库，但很有可能会出现以下错误<br><img src="/img/Javaweb/error.png" alt="img"></p>
+<blockquote>
+<p>确保已开启MySQL，腾讯云上安全组配置没问题，云主机系统上的防火墙没有屏蔽3306端口</p>
+</blockquote>
+<p><img src="/img/Javaweb/netstat.png" alt="img"><br><img src="/img/Javaweb/安全组.png" alt="img"><br><img src="/img/Javaweb/ufw.png" alt="img"></p>
+<p>9.其实这里还需要改一个地方：修改mysql.cnf(Ubuntu16.04,路径为:/etc/mysql/mysql.conf.d/mysqld.cnf)配置文件 或 my.cnf(Ubuntu14.04,路径为:/etc/mysql/my.cnf)配置文件，将绑定地址为127.0.0.1的句子注释掉，或把地址改为0.0.0.0<br><img src="/img/Javaweb/change.png" alt="img"></p>
+<blockquote>
+<p>:wq 保存退出，再执行以下命令，重启mysql服务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service mysql restart</div></pre></td></tr></table></figure></p>
+<p>现在可以用Navicat来连接测试了</p>
+</blockquote>
+<p><img src="/img/Javaweb/成功.png" alt="img"></p>
+<blockquote>
+<p>连接上去开始操作数据库吧</p>
+</blockquote>
+<p><img src="/img/Javaweb/start.png" alt="img"></p>
 
             <div class="clearfix"></div>
             <hr class="nogutter">
         </div>
         <nav class="pagination" role="pagination">
     
-    <a class="pull-left" href="/2017/06/18/搭建JavaWeb服务器-mysql和Tomcat的配置/" style="float: left;">
-        ← 搭建JavaWeb服务器-mysql和Tomcat的配置
-    </a>
     
-    
-    <a class="pull-right" href="/2017/05/16/K-means实现聚类/">
-        K-means实现聚类 →
+    <a class="pull-right" href="/2017/05/21/智能指针/">
+        智能指针 →
     </a>
     
 </nav>
