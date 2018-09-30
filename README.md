@@ -1,2 +1,2 @@
 # yuanshanxike.github.io
-[https://hexo.io/zh-cn/index.html](base on hexo)
+[base on hexo](https://hexo.io/zh-cn/index.html)
